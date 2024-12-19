@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Sharing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #1f1f1f;
+            border-bottom: 2px solid #333;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-bar input {
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+        }
+        .profile img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        .container {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #1f1f1f;
+            padding: 20px 10px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .main-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .file-card {
+            background-color: #1f1f1f;
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .file-card img {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+        .file-card .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .file-card .btn:hover {
+            background-color: #0056b3;
+        }
+        .upload-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007BFF;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .upload-icon img {
+            width: 30px;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #1f1f1f;
+            border-top: 2px solid #333;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>File Sharing</h1>
+        <div class="search-bar">
+            <img src="https://img.icons8.com/ios-glyphs/30/ffffff/search--v1.png" alt="Search">
+            <input type="text" placeholder="Search files..." aria-label="Search files">
+        </div>
+        <div class="profile">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/user.png" alt="User Profile">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#"><img src="https://img.icons8.com/ios-filled/20/ffffff/home.png" alt="Home"> Home</a></li>
+                <li><a href="#"><img src="https://img.icons8.com/ios-filled/20/ffffff/folder.png" alt="My Files"> My Files</a></li>
+                <li><a href="#"><img src="https://img.icons8.com/ios-filled/20/ffffff/share.png" alt="Shared with Me"> Shared with Me</a></li>
+                <li><a href="#"><img src="https://img.icons8.com/ios-filled/20/ffffff/settings.png" alt="Settings"> Settings</a></li>
+            </ul>
+        </div>
+
+        <div class="main-area">
+            <div class="file-grid">
+                <main>
+                    <section id="file-container" class="file-grid"></section>
+                </main>
+                <script src="/static/js/main.js"></script>
+                <!-- Add more static file cards as needed -->
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-icon" title="Upload File">
+        <label for="file-upload">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/upload.png" alt="Upload Icon" aria-label="Upload File">
+        </label>
+        <input type="file" id="file-upload" style="display: none;" onchange="uploadFile(event)">
+    </div>
+    
+    <script src="/static/js/main.js"></script>
+    
+
+    <footer>
+        &copy; 2024 File Sharing. Built with ❤️ by Abhey.
+    </footer>
+    <link rel="stylesheet" href="/static/css/styles.css">
+<script src="/static/js/main.js" defer></script>
+
+</body>
+</html>
