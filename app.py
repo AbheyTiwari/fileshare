@@ -6,12 +6,12 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-
-app = Flask(__name__)
-
 # Configuration
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xlsx', 'pptx', 'mp4', 'mp3', 'wav', 'ogg', 'm4a'}
+ALLOWED_EXTENSIONS = {
+    'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xlsx', 'pptx', 
+    'mp4', 'mp3', 'wav', 'ogg', 'm4a', 'zip', 'tar', 'folder'
+}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Ensure the uploads folder exists
@@ -32,7 +32,12 @@ def index():
 @app.route('/files', methods=['GET'])
 def list_files():
     """List all files in the upload folder."""
-    files = os.listdir(UPLOAD_FOLDER)
+    files = []
+    for root, dirs, filenames in os.walk(UPLOAD_FOLDER):
+        for filename in filenames:
+            files.append({'name': filename, 'isFolder': False})
+        for dir_name in dirs:
+            files.append({'name': dir_name, 'isFolder': True})
     return jsonify(files)
 
 
@@ -69,6 +74,34 @@ def download_file(filename):
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
     except FileNotFoundError:
         return jsonify({'error': 'File not found'}), 404
+
+
+@app.route('/preview/<filename>', methods=['GET'])
+def preview_file(filename):
+    """Preview a file (for images, audio, video, PDF, etc.)."""
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    if not os.path.exists(file_path):
+        return jsonify({'error': 'File not found'}), 404
+
+    file_extension = filename.split('.')[-1].lower()
+    preview_data = {}
+
+    # Handle different file types for preview
+    if file_extension in {'jpg', 'jpeg', 'png', 'gif'}:
+        preview_data = {'type': 'image', 'src': f'/files/{filename}'}
+    elif file_extension in {'mp4', 'avi', 'mov'}:
+        preview_data = {'type': 'video', 'src': f'/files/{filename}'}
+    elif file_extension in {'mp3', 'wav', 'ogg', 'm4a'}:
+        preview_data = {'type': 'audio', 'src': f'/files/{filename}'}
+    elif file_extension in {'txt', 'pdf'}:
+        preview_data = {'type': 'file', 'src': f'/files/{filename}'}
+
+    if preview_data:
+        return jsonify(preview_data)
+
+    return jsonify({'error': 'Preview not available for this file type.'}), 400
+
 
 @app.errorhandler(404)
 def page_not_found(e):
